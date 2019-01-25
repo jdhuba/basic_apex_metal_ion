@@ -1,0 +1,288 @@
+commit 59493423947c9a2f0252f4746620bfb88f6a2ab0
+Author: huba <huba@nrl.navy.mil>
+Date:   Thu Apr 5 10:33:30 2018 -0400
+
+     1. put xs/ys/zs and xp/yp/zp into grid_mod.f90
+    
+     2. output vppnx,y,z/vhpnx,y,z
+    
+     3. exb_transport
+    
+        - use uu/vv (average of u/v in vexbp/vexbh)
+        - use vppnx1/y1/z1 in vexbp for transport
+          (not needed for vexbh)
+
+commit b9732a7a6956dcbfd6f0e7975c89038aa0526fd0
+Author: huba <huba@nrl.navy.mil>
+Date:   Wed Apr 4 14:48:09 2018 -0400
+
+     1. swapped xnormp for vpsnx (...)
+        but still at cell center
+    
+     2. averaged u/v to cell face
+    
+     3. more needs to be done to
+        get everything at cell face
+        (e.g., grid/neutral)
+
+commit feda2481c6e65cb78aedaba7afbe939a818c7bc4
+Author: huba <huba@nrl.navy.mil>
+Date:   Tue Apr 3 11:10:04 2018 -0400
+
+     - changed sami3-3.00.namelist
+     - no big deal
+
+commit e4a793019aee74a0e6f184ed97913f3f721fdd96
+Author: huba <huba@nrl.navy.mil>
+Date:   Mon Apr 2 13:22:51 2018 -0400
+
+     1. added variables
+    
+        u6 (vexbp_phi)
+        u7 (vexbs_phi)
+        u8 (vexbh_phi)
+    
+     2. switch sign of gpoci
+
+commit 118093f280c30f3ae1e54f1d9ead5cc674d3be9c
+Author: huba <huba@nrl.navy.mil>
+Date:   Fri Mar 30 11:04:46 2018 -0400
+
+    1. output additional geometric factors
+       (x/y/z/normp/s/h) - only x/y/znorms
+       is used in the code
+    
+    2. introduced uu/vv: wind velocities at
+       cell interfaces in exb_transport
+       instead of the cell-centered values
+       u/v
+
+commit dc32dc143b4774a424c28219d3b22d597bef66e1
+Author: huba <huba@nrl.navy.mil>
+Date:   Tue Mar 20 14:09:20 2018 -0400
+
+     sami3-3.00.f90
+    
+     - set gpoci = -gp / oci
+         gp is positive
+         needs to be negative in vexbp so ions fall
+    
+     exb_transport.f90
+    
+     - added gp to vexbp
+     - extrapolated vexbh_phi to nlp1
+     - set u3/u4/u5 to factor0/1/2 for output
+
+commit 3c33c4cecf582951aa09317f94bad38c035997d8
+Author: huba <huba@nrl.navy.mil>
+Date:   Fri Mar 16 14:13:44 2018 -0400
+
+      bounds issue with vexbp_phi/vexbh_phi in
+      exb_transport.f90
+    
+     1. change  (line 265)
+          vexbp_phi(i,j,k) * factor1 - &
+        to
+          vexbp_phi(i,j,k-1) * factor1 - &
+        (this can be improved with an extrapolation)
+    
+     2. change (line 142)
+          vexbh_phi(i,j,k) * factor1 + &
+        to
+          0.5 * vexbh_phi(i,j-1,k) * factor1 + &
+
+commit 4c0f6b26bc492d55fe86b4327cb70866bd96abc0
+Author: huba <huba@nrl.navy.mil>
+Date:   Thu Mar 1 09:58:12 2018 -0500
+
+      fixed 'typos' so exb_transport.f90 compiles
+
+commit 35b74d2c05d593b838e908f333362df635bb2a95
+Author: huba <huba@nrl.navy.mil>
+Date:   Thu Mar 1 09:45:57 2018 -0500
+
+      redo neutral flows relavtive to grid
+      neutral flow dotted into grid norms
+
+commit f463e9aa0d9436b1c14e26d34df18a868029f0fc
+Author: huba <huba@nrl.navy.mil>
+Date:   Wed Feb 28 09:13:53 2018 -0500
+
+    changed output timing
+    
+                if ( dts < dt .AND. .not. lprnt ) then
+    !                dt     = max(dts,.01) ! can lead to outputting 2 times in a row
+                    dt     = max(dts,.1)
+                    lprnt  = .TRUE.
+                endif
+
+commit 8497cf9ca016e0d837a8d63748caa23a3c751d90
+Author: huba <huba@nrl.navy.mil>
+Date:   Mon Feb 26 08:22:19 2018 -0500
+
+     changed sign of vnp in definition
+     on vexbh (i.e., p x ez = -h)
+
+commit 137e6e8e6aa8943634c1b537da1d6e4b48d9dbfd
+Author: huba <huba@nrl.navy.mil>
+Date:   Fri Feb 23 08:43:31 2018 -0500
+
+      > took gp out of vexbp/h: already included in E
+      > added gs to vexbs
+
+commit 089eebde93b2f0747520ec68b9f6292064ed771b
+Author: huba <huba@nrl.navy.mil>
+Date:   Tue Feb 20 12:37:07 2018 -0500
+
+     sami3-3.00.f90
+    
+     > added 'heavy handed' damping for Mg+ and Fe+
+       above 80 degrees
+     > kills unstable increase of metal ion density
+
+commit 3c1c4e513dc532d8c4dfff29baf8fdcf6f0a7596
+Author: huba <huba@nrl.navy.mil>
+Date:   Mon Feb 19 10:21:11 2018 -0500
+
+     sami3-3.00.f90
+    
+     changed do loops from 2,nl-1 to 1,nl
+     in calls to neutambt and loop over
+     zenith/transprt
+
+commit 36e8daddcce4bfb3f710e0c31eabf6a2944d8c4a
+Author: huba <huba@nrl.navy.mil>
+Date:   Sun Feb 18 11:36:42 2018 -0500
+
+     1. made nrlmsise00.f same as basic
+        (ordering of variables is a common block)
+    
+     2. exb_transport.f90
+        - extrapolate deni/ti/te at k=1 in fluxh
+
+commit 5117380102c6ebc08cc6585198f65a637b7c98d0
+Author: huba <huba@nrl.navy.mil>
+Date:   Fri Feb 16 14:58:32 2018 -0500
+
+     > in namelist added ,1.,1., to snn
+     > in main code mpi_bcast(snn,nneut,....)
+
+commit 584b8d71be7317d51276f7517e7bbf4e487e6cbe
+Author: huba <huba@nrl.navy.mil>
+Date:   Fri Feb 16 14:20:33 2018 -0500
+
+     modified exb_transport.f90
+    
+     > took out variables defined at j = nf
+       (i.e., extrapolation)
+    
+     > modified transport for fluxnh at k =  1
+
+commit 9e96e9c9d14e02911c50ef5998b916d6bb065e4e
+Author: huba <huba@nrl.navy.mil>
+Date:   Mon Feb 12 14:52:46 2018 -0500
+
+     exb_transport.f90
+    
+     1. 2,nlm1 --> 1,nl
+    
+     2. limited E x B drifts above pcrit*re
+
+commit bfa1cd736f2c27d92bd4957007cc73ca48c6e026
+Author: huba <huba@nrl.navy.mil>
+Date:   Mon Feb 12 09:54:04 2018 -0500
+
+     changed definition of gs (from geometric to exact (swisdak))
+
+commit 1545bdf371a25802a1e3b6a882f7ba38accea141
+Author: huba <huba@nrl.navy.mil>
+Date:   Fri Feb 9 15:28:00 2018 -0500
+
+     changed 2,nl-1 --> 1,nl in some subroutines
+
+commit fccf5657edb9653203b790d43ba01a759cd52748
+Author: huba <huba@nrl.navy.mil>
+Date:   Thu Feb 8 13:39:40 2018 -0500
+
+      added 'alt_crit_avg' to namelist_mod.f90
+
+commit fad3afec3bd8c06009155e70bbc494723154c98e
+Merge: 5dadeb9 5ac5705
+Author: huba <huba@nrl.navy.mil>
+Date:   Thu Feb 8 13:24:51 2018 -0500
+
+    Merge https://github.com/jdhuba/sami3_basic_metal_ion
+    
+      updating sami3_basic_metal
+
+commit 5ac5705ef63fa0c669f6a0b7ae42be27bb240a5d
+Author: jdhuba <36104093+jdhuba@users.noreply.github.com>
+Date:   Wed Feb 7 16:35:49 2018 -0500
+
+    Add files via upload
+
+commit 5dadeb966febf5f34f3017953033087a23728ab9
+Merge: ff3e218 0896a4d
+Author: huba <huba@nrl.navy.mil>
+Date:   Wed Feb 7 16:34:14 2018 -0500
+
+    Merge https://github.com/jdhuba/sami3_basic_metal_ion
+    
+     merging README.md ...
+
+commit ff3e2181b9b54b19a745e0f3dd63c80e5f5c18f5
+Author: huba <huba@nrl.navy.mil>
+Date:   Wed Feb 7 16:25:15 2018 -0500
+
+     basic metal ion cod
+
+commit 0896a4dc63395bc27d035ddb2fdb56658a9fe83e
+Author: jdhuba <36104093+jdhuba@users.noreply.github.com>
+Date:   Wed Feb 7 16:09:36 2018 -0500
+
+    Initial commit
+
+commit 846d0ee9465441ead44883e735a9787385d67cf5
+Merge: 641de34 d90a54f
+Author: huba <huba@nrl.navy.mil>
+Date:   Wed Feb 7 09:25:33 2018 -0500
+
+    Merge branch 'master' of https://github.com/jdhuba/sami3_basic
+    
+     - trying to coordinate local/remote repository
+
+commit 641de34b3fd348f9dea1a2a4aec86aa12b6b7ca6
+Author: huba <huba@nrl.navy.mil>
+Date:   Wed Feb 7 09:00:04 2018 -0500
+
+      testing commit
+    
+      - changed code for nl = 180
+      - and blat_max4 = 89
+
+commit d90a54f2e0bbd8eefa75416a0e3ecf2de270fcba
+Merge: 94afeb9 7b2ecdd
+Author: jdhuba <36104093+jdhuba@users.noreply.github.com>
+Date:   Wed Feb 7 08:40:04 2018 -0500
+
+    Merge pull request #1 from jdhuba/test_1
+    
+    Update README.md
+
+commit 7b2ecdd52367825cad0cb75a721cda67bbd3ccbc
+Author: jdhuba <36104093+jdhuba@users.noreply.github.com>
+Date:   Wed Feb 7 08:34:03 2018 -0500
+
+    Update README.md
+
+commit 94afeb99ed5a4903b693544d97f4162875b14fdf
+Author: jdhuba <36104093+jdhuba@users.noreply.github.com>
+Date:   Wed Feb 7 08:27:33 2018 -0500
+
+    Initial commit
+
+commit 6b30ac2622e872b7856acf64a5e954529fb3297c
+Author: huba <huba@nrl.navy.mil>
+Date:   Tue Feb 6 14:09:11 2018 -0500
+
+    first commit

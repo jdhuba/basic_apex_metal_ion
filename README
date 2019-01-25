@@ -1,0 +1,34 @@
+12/31/18
+
+- sami3 / metal_ion
+  . went back to original grid, i.e.,
+    norms/normp/normh fixed
+  . modified vsi smooth, i.e., smoothz_1D
+  . modified qfac in bdirs
+  . changed sign of (vps+vph) in vexbs
+    (was negative - should be positive)
+
+8/1/18
+
+change loss term to
+
+ !     loss term for mg+ and fe+ (from mcneil et al. (2001) - fig 2)
+
+  if ( alts(i,nfl,nll) < 100. ) then
+    xloss_110  = 1.e-13
+    delx_loss  = .6
+    xloss_rate = xloss_110 * exp(-(alts(i,nfl,nll)-100.)/delx_loss)
+    loss(i,ptmgp)  = xloss_rate
+    loss(i,ptfep)  = xloss_rate
+
+from 
+
+ !     loss term for mg+ and fe+ (from mcneil et al. (2001) - fig 2)
+
+  if ( alts(i,nfl,nll) < 110. ) then
+    xloss_110  = 1.e-13
+    delx_loss  = 1.5
+    xloss_rate = xloss_110 * exp(-(alts(i,nfl,nll)-110.)/delx_loss)
+    loss(i,ptmgp)  = xloss_rate
+    loss(i,ptfep)  = xloss_rate
+ 

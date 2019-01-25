@@ -2,11 +2,11 @@
 module parameter_mod
 
 !      total number of workers
-    integer,parameter ::  numwork = 12
+    integer,parameter ::  numwork = 32
 
 !      number of altitudes (e.g., field lines)
 
-    integer,parameter :: nf   = 124
+    integer,parameter :: nf   = 248
     integer,parameter :: nfp1 = nf + 1
     integer,parameter :: nfm1 = nf - 1
     integer,parameter :: nfm2 = nf - 2 
@@ -14,7 +14,7 @@ module parameter_mod
 !      number of grid cells along field line
 !      nseg needs to be even
          
-    integer,parameter :: nz0 = 200, nextra = 2, nseg = 2, &
+    integer,parameter :: nz0 = 404, nextra = 0, nseg = 2, &
                          nze = nseg * nextra, nz = nz0+nze, &
                          nzp1 = nz + 1, &
                          nzm1 = nz - 1  
@@ -22,7 +22,7 @@ module parameter_mod
 !      number of grid cells in longitudinal direction per worker
 
 !    integer,parameter ::  nl   = 32, &
-    integer,parameter ::  nl   = 10, &
+    integer,parameter ::  nl   = 5, &
                           nlp1 = nl + 1, &
                           nlm1 = nl - 1  
 

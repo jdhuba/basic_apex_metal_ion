@@ -117,7 +117,6 @@
                 vppnx1   = 0.5 * ( vppnx(i,j,k) + vppnx(i,j,k+1) )
                 vppny1   = 0.5 * ( vppny(i,j,k) + vppny(i,j,k+1) )
                 vppnz1   = 0.5 * ( vppnz(i,j,k) + vppnz(i,j,k+1) )
-
                 vexbp(i,j,k,ni) = vexbp_phi(i,j,k) / factor0 - &
                                   vexbh_phi(i,j,k) * factor1 + &
                  (-1.0) *  uu * factor1 * dvec(i,j,k,2,1) + &
